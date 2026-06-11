@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "layout": {
+    "paperWidth": 1280,
+    "railWidth": 365,
+    "dossierMinHeight": 860,
+    "avatarSize": 100,
+    "emblemSize": 104,
+    "abilityIconSize": 82,
+    "headingScale": 100,
+    "bodyScale": 100,
+    "contentPadding": 64,
+    "sectionGap": 46,
+    "backgroundSize": 100,
+    "backgroundOpacity": 86,
+    "backgroundX": 50,
+    "backgroundY": 0,
+    "imageRadius": 100,
+    "imageGray": 100,
+    "imageSepia": 10
+  },
+  "colors": {
+    "paper": "#ede5d3",
+    "ink": "#241f19",
+    "gold": "#c5a46a",
+    "green": "#173a2d",
+    "burgundy": "#772520",
+    "topbar": "#151514"
+  },
+  "assets": {
+    "background": "/assets/paper-map.png",
+    "leaderAbilityIcon": "/assets/icon-leader-ability.png",
+    "civilizationAbilityIcon": "/assets/icon-civ-ability.png",
+    "leaders": {
+      "chiang": {
+        "portrait": "/assets/portrait-chiang.png",
+        "emblem": "/assets/emblem-roc.png"
+      },
+      "hitler": {
+        "portrait": "/assets/portrait-hitler.png",
+        "emblem": "/assets/emblem-third-reich.png"
+      }
+    }
+  }
+}

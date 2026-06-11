@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { App } from "./App.jsx";
@@ -70,6 +70,31 @@ describe("More Historical Leaders page", () => {
     render(<App />);
 
     expect(screen.queryByRole("complementary", { name: "Visual editor" })).not.toBeInTheDocument();
+  });
+
+  test("loads the published site config for regular visitors", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url) => {
+        if (url === "/site-config.json") {
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({ layout: { avatarSize: 144 } }),
+          });
+        }
+
+        return Promise.resolve({
+          ok: false,
+          json: async () => ({}),
+        });
+      }),
+    );
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(document.documentElement.style.getPropertyValue("--editor-avatar-size")).toBe("144px");
+    });
   });
 
   test("edit mode adjusts avatar size and exports the current config", async () => {

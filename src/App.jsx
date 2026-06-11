@@ -150,9 +150,9 @@ function Comments({ labels }) {
 function readStoredConfig() {
   try {
     const raw = localStorage.getItem(configStorageKey);
-    return raw ? JSON.parse(raw) : defaultSiteConfig;
+    return raw ? JSON.parse(raw) : null;
   } catch {
-    return defaultSiteConfig;
+    return null;
   }
 }
 
@@ -392,8 +392,10 @@ function VisualEditor({ config, selectedLeaderId, onConfigChange }) {
 export function App() {
   const [language, setLanguage] = useState("en");
   const [selectedLeaderId, setSelectedLeaderId] = useState("chiang");
-  const [siteConfig, setSiteConfig] = useState(() => mergeSiteConfig(readStoredConfig()));
   const [isEditMode] = useState(() => new URLSearchParams(window.location.search).has("edit"));
+  const [siteConfig, setSiteConfig] = useState(() =>
+    mergeSiteConfig(isEditMode ? (readStoredConfig() ?? defaultSiteConfig) : defaultSiteConfig),
+  );
   const labels = copy[language];
   const selectedLeader = useMemo(
     () => leaders.find((leader) => leader.id === selectedLeaderId) ?? leaders[0],
@@ -403,12 +405,36 @@ export function App() {
   const selectedLeaderAssets = siteConfig.assets.leaders[selectedLeader.id];
 
   useEffect(() => {
+    let alive = true;
+    if (isEditMode && readStoredConfig()) {
+      return () => {
+        alive = false;
+      };
+    }
+
+    fetch("/site-config.json", { cache: "no-cache" })
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("site config unavailable"))))
+      .then((data) => {
+        if (alive) {
+          setSiteConfig(mergeSiteConfig(data));
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      alive = false;
+    };
+  }, [isEditMode]);
+
+  useEffect(() => {
     const variables = createCssVariables(siteConfig);
     for (const [name, value] of Object.entries(variables)) {
       document.documentElement.style.setProperty(name, value);
     }
-    storeConfig(siteConfig);
-  }, [siteConfig]);
+    if (isEditMode) {
+      storeConfig(siteConfig);
+    }
+  }, [isEditMode, siteConfig]);
 
   return (
     <main className={`site-shell theme-${selectedLeader.accent} ${isEditMode ? "edit-mode" : ""}`}>
