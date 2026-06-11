@@ -1,0 +1,182 @@
+export const steamUrl = "https://steamcommunity.com/sharedfiles/filedetails/?id=3738922774";
+
+export const copy = {
+  en: {
+    code: "EN",
+    otherCode: "中文",
+    title: "More Historical Leaders",
+    headerTitle: "MORE HISTORICAL LEADERS",
+    subtitle: "A Civilization VI Mod",
+    intro: "Adds more historical leaders and civilizations to Civilization VI.",
+    leaders: "Leaders",
+    leaderAbility: "Leader Ability",
+    civilizationAbility: "Civilization Ability",
+    uniqueUnit: "Unique Unit",
+    uniqueBuilding: "Unique Building",
+    workshop: "Steam Workshop",
+    comments: "Comments",
+    name: "Name",
+    message: "Message",
+    submit: "Submit",
+    namePlaceholder: "Enter your name",
+    messagePlaceholder: "Share your thoughts about this mod...",
+  },
+  zh: {
+    code: "中文",
+    otherCode: "EN",
+    title: "更多历史领袖",
+    headerTitle: "更多历史领袖",
+    subtitle: "文明 VI 模组",
+    intro: "为《文明 VI》加入更多历史领袖与文明。",
+    leaders: "领袖",
+    leaderAbility: "领袖能力",
+    civilizationAbility: "文明能力",
+    uniqueUnit: "特色单位",
+    uniqueBuilding: "特色建筑",
+    workshop: "Steam 创意工坊",
+    comments: "留言",
+    name: "名称",
+    message: "留言",
+    submit: "提交",
+    namePlaceholder: "输入你的名称",
+    messagePlaceholder: "写下你对这个模组的看法...",
+  },
+};
+
+export const leaders = [
+  {
+    id: "chiang",
+    accent: "green",
+    portrait: "/assets/portrait-chiang.png",
+    emblem: "/assets/emblem-roc.png",
+    en: {
+      name: "Chiang Kai-shek",
+      civilization: "Republic of China",
+      quote:
+        "The Republic of China looks to your government to hold the coast, modernize the army, and build disciplined institutions.",
+      leaderAbility: {
+        name: "Island Commandos",
+        description:
+          "Coastal cities gain +5 City Ranged Strike Strength. Trade Routes originating in Coastal cities provide +2 Gold. Coastal cities gain +20% Production toward land and naval combat units. Units gain +5 Combat Strength when defending in own territory. Each Harbor building provides +1 Production and +1 Culture. Coast tiles adjacent to a Harbor district provide +2 Culture.",
+      },
+      civilizationAbility: {
+        name: "National Government",
+        description:
+          "May construct the Whampoa Military Academy. Cities with an established Governor gain +15% Production toward districts and buildings. Whenever a city completes a district, gain Science and Culture equal to 10% of that district's Production cost.",
+      },
+      uniqueUnit: {
+        name: "German-trained Division",
+        description:
+          "A Modern era melee unit replacing Infantry. Unlocks earlier at Rifling, costs 10% less Production, has lower Combat Strength, and does not require Oil maintenance. Gains +5 Combat Strength on Coast or land adjacent to Coast.",
+      },
+      uniqueBuilding: {
+        name: "Whampoa Military Academy",
+        description:
+          "A one-per-civilization Encampment building. Provides Production, Culture, Science, and Great General points. Land combat units trained in this city receive one free promotion.",
+      },
+    },
+    zh: {
+      name: "蒋介石",
+      civilization: "中华民国",
+      quote: "中华民国需要国民政府守住海岸、整训军队，并建立有纪律的现代制度。",
+      leaderAbility: {
+        name: "海岛奇兵",
+        description:
+          "沿海城市+5城市远程攻击力。起点为沿海城市的贸易路线+2金币。沿海城市训练陆地和海军战斗单位时+20%生产力。单位在己方领土防御时+5战斗力。每座港口建筑提供+1生产力和+1文化值。与港口区域相邻的海岸单元格+2文化值。",
+      },
+      civilizationAbility: {
+        name: "国民政府",
+        description:
+          "可以建造黄埔军校。拥有总督的城市建造区域和建筑时+15%生产力。每当城市建成一个区域时，获得相当于该区域生产力成本10%的科技值和文化值。",
+      },
+      uniqueUnit: {
+        name: "德械师",
+        description:
+          "蒋介石特色现代近战单位，取代步兵。在膛线科技解锁，生产成本降低10%，不需要石油维护。在海岸或与海岸相邻的陆地单元格战斗时+5战斗力。",
+      },
+      uniqueBuilding: {
+        name: "黄埔军校",
+        description:
+          "中华民国特色建筑。提供生产力、文化值、科技值和大将军点数。此城训练的陆地战斗单位获得一次免费晋升。每个文明只能建造一座。",
+      },
+    },
+  },
+  {
+    id: "hitler",
+    accent: "burgundy",
+    portrait: "/assets/portrait-hitler.png",
+    emblem: "/assets/emblem-third-reich.png",
+    en: {
+      name: "Adolf Hitler",
+      civilization: "Third Reich",
+      quote:
+        "A high-risk conquest leader built around military preparation, rearmament, and industrial-era rapid warfare.",
+      leaderAbility: {
+        name: "Revanchist Mobilization",
+        description:
+          "+20% Production toward military units. Unit upgrades cost 20% less Gold. Capturing an enemy city grants Gold equal to 30% of your current treasury. All cities gain +20 Loyalty. After reaching the Industrial Era, heavy cavalry, light cavalry, fighter, and bomber units gain +1 Movement and +5 Combat Strength when attacking damaged units. Land attackers suffer -5 Combat Strength on tundra or snow. Diplomatic Favor gains from alliances, suzerainty, emergencies, and Great People are reduced by 50%.",
+      },
+      civilizationAbility: {
+        name: "Military Preparation",
+        description:
+          "+25% Production toward Encampment districts and Encampment buildings. Cities with an Encampment gain +10% Production toward melee, anti-cavalry, and ranged units. While at war, gain +100% Production toward military units in the capital.",
+      },
+      uniqueUnit: {
+        name: "Tiger Heavy Tank",
+        description:
+          "Replaces the Tank. Gains additional Combat Strength, including bonuses against cavalry and city defenses, but costs more to produce and maintain and uses more Oil.",
+      },
+      uniqueBuilding: {
+        name: "Armaments Office",
+        description:
+          "Replaces the Armory. Cheaper to build, provides Production and Great General points, boosts unit training in the city, and reduces Amenities.",
+      },
+    },
+    zh: {
+      name: "阿道夫·希特勒",
+      civilization: "德意志第三帝国",
+      quote: "高风险征服型领袖，围绕军备准备、再武装与工业时代快速战争展开。",
+      leaderAbility: {
+        name: "复仇主义动员",
+        description:
+          "训练军事单位时+20%生产力。军事单位升级费用减少20%金币。占领敌方城市时，获得相当于当前国库30%的金币。所有城市忠诚度+20。进入工业时代后，重骑兵、轻骑兵、战斗机和轰炸机单位+1移动力，攻击受损单位时+5战斗力。在冻土或雪地上攻击时-5战斗力。来自同盟、宗主国、紧急事件和伟人的外交支持收益降低50%。",
+      },
+      civilizationAbility: {
+        name: "军国准备",
+        description:
+          "军营区域和军营建筑+25%生产力。拥有军营的城市训练近战、抗骑兵和远程单位时+10%生产力。处于战争状态时，首都训练军事单位时+100%生产力。",
+      },
+      uniqueUnit: {
+        name: "虎式重坦",
+        description:
+          "替代坦克。获得额外战斗力，并对骑兵和城市防御有额外加成。生产和维护成本更高，消耗更多石油。",
+      },
+      uniqueBuilding: {
+        name: "军备局",
+        description:
+          "替代兵工厂。建造成本更低，提供生产力和大将军点数，提高所在城市的单位训练效率，但降低宜居度。",
+      },
+    },
+  },
+];
+
+export const fallbackComments = [
+  {
+    id: "seed-1",
+    name: "HistoryFan88",
+    message: "Great addition to the game. The dossier style fits the mod nicely.",
+    created_at: "2026-06-08T00:00:00.000Z",
+  },
+  {
+    id: "seed-2",
+    name: "WarlordX",
+    message: "The abilities read clearly without turning the page into a wall of text.",
+    created_at: "2026-06-07T00:00:00.000Z",
+  },
+  {
+    id: "seed-3",
+    name: "CivStrategist",
+    message: "Clean historical presentation. Looking forward to more leaders.",
+    created_at: "2026-06-06T00:00:00.000Z",
+  },
+];
