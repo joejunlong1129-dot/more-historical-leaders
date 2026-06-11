@@ -1,6 +1,9 @@
 import { ArrowSquareOut, ChatText, SteamLogo } from "@phosphor-icons/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { copy, fallbackComments, leaders, steamUrl } from "./content.js";
+import { createCssVariables, defaultSiteConfig, mergeSiteConfig, serializeSiteConfig } from "./siteConfig.js";
+
+const configStorageKey = "more-historical-leaders-site-config";
 
 function formatDate(value, lang) {
   const date = new Date(value);
@@ -144,18 +147,271 @@ function Comments({ labels }) {
   );
 }
 
+function readStoredConfig() {
+  try {
+    const raw = localStorage.getItem(configStorageKey);
+    return raw ? JSON.parse(raw) : defaultSiteConfig;
+  } catch {
+    return defaultSiteConfig;
+  }
+}
+
+function storeConfig(config) {
+  localStorage.setItem(configStorageKey, serializeSiteConfig(config));
+}
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function NumberControl({ label, value, min, max, step = 1, onChange }) {
+  const id = useId();
+  const [draft, setDraft] = useState(String(value));
+
+  useEffect(() => {
+    setDraft(String(value));
+  }, [value]);
+
+  function handleTypedValue(nextValue) {
+    setDraft(nextValue);
+    const number = Number(nextValue);
+    if (Number.isFinite(number) && number >= min && number <= max) {
+      onChange(number);
+    }
+  }
+
+  function handleSliderValue(nextValue) {
+    setDraft(nextValue);
+    onChange(Number(nextValue));
+  }
+
+  return (
+    <div className="editor-control">
+      <label htmlFor={id}>{label}</label>
+      <div>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          aria-label={`${label} slider`}
+          onChange={(event) => handleSliderValue(event.target.value)}
+        />
+        <input
+          id={id}
+          type="number"
+          min={min}
+          max={max}
+          step={step}
+          value={draft}
+          onChange={(event) => handleTypedValue(event.target.value)}
+        />
+      </div>
+    </div>
+  );
+}
+
+function ColorControl({ label, value, onChange }) {
+  return (
+    <label className="editor-color">
+      <span>{label}</span>
+      <input type="color" value={value} onChange={(event) => onChange(event.target.value)} />
+    </label>
+  );
+}
+
+function FileControl({ label, onChange }) {
+  return (
+    <label className="editor-file">
+      <span>{label}</span>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={async (event) => {
+          const file = event.target.files?.[0];
+          if (!file) {
+            return;
+          }
+          onChange(await fileToDataUrl(file));
+        }}
+      />
+    </label>
+  );
+}
+
+function VisualEditor({ config, selectedLeaderId, onConfigChange }) {
+  const [exported, setExported] = useState("");
+  const selectedAssets = config.assets.leaders[selectedLeaderId];
+
+  function updateLayout(key, value) {
+    onConfigChange({
+      ...config,
+      layout: {
+        ...config.layout,
+        [key]: value,
+      },
+    });
+  }
+
+  function updateColor(key, value) {
+    onConfigChange({
+      ...config,
+      colors: {
+        ...config.colors,
+        [key]: value,
+      },
+    });
+  }
+
+  function updateAsset(key, value) {
+    onConfigChange({
+      ...config,
+      assets: {
+        ...config.assets,
+        [key]: value,
+      },
+    });
+  }
+
+  function updateLeaderAsset(key, value) {
+    onConfigChange({
+      ...config,
+      assets: {
+        ...config.assets,
+        leaders: {
+          ...config.assets.leaders,
+          [selectedLeaderId]: {
+            ...selectedAssets,
+            [key]: value,
+          },
+        },
+      },
+    });
+  }
+
+  function resetConfig() {
+    onConfigChange(defaultSiteConfig);
+    setExported("");
+  }
+
+  function exportConfig() {
+    setExported(serializeSiteConfig(config));
+  }
+
+  function importConfig(value) {
+    try {
+      const parsed = JSON.parse(value);
+      onConfigChange(parsed);
+      setExported(serializeSiteConfig(parsed));
+    } catch {
+      setExported(value);
+    }
+  }
+
+  return (
+    <aside className="visual-editor" aria-label="Visual editor">
+      <header>
+        <strong>Visual editor</strong>
+        <p>Local preview only. Export JSON when the layout is ready.</p>
+      </header>
+
+      <section>
+        <h2>Images</h2>
+        <FileControl label="Background image" onChange={(value) => updateAsset("background", value)} />
+        <FileControl label="Selected leader portrait" onChange={(value) => updateLeaderAsset("portrait", value)} />
+        <FileControl label="Selected leader emblem" onChange={(value) => updateLeaderAsset("emblem", value)} />
+        <FileControl label="Leader ability icon" onChange={(value) => updateAsset("leaderAbilityIcon", value)} />
+        <FileControl label="Civilization ability icon" onChange={(value) => updateAsset("civilizationAbilityIcon", value)} />
+      </section>
+
+      <section>
+        <h2>Layout</h2>
+        <NumberControl label="Page width" min={900} max={1600} value={config.layout.paperWidth} onChange={(value) => updateLayout("paperWidth", value)} />
+        <NumberControl label="Leader rail width" min={260} max={520} value={config.layout.railWidth} onChange={(value) => updateLayout("railWidth", value)} />
+        <NumberControl label="Dossier height" min={560} max={1200} value={config.layout.dossierMinHeight} onChange={(value) => updateLayout("dossierMinHeight", value)} />
+        <NumberControl label="Avatar size" min={56} max={180} value={config.layout.avatarSize} onChange={(value) => updateLayout("avatarSize", value)} />
+        <NumberControl label="Emblem size" min={56} max={180} value={config.layout.emblemSize} onChange={(value) => updateLayout("emblemSize", value)} />
+        <NumberControl label="Ability icon size" min={44} max={140} value={config.layout.abilityIconSize} onChange={(value) => updateLayout("abilityIconSize", value)} />
+        <NumberControl label="Heading scale" min={70} max={140} value={config.layout.headingScale} onChange={(value) => updateLayout("headingScale", value)} />
+        <NumberControl label="Body scale" min={80} max={125} value={config.layout.bodyScale} onChange={(value) => updateLayout("bodyScale", value)} />
+        <NumberControl label="Content padding" min={20} max={100} value={config.layout.contentPadding} onChange={(value) => updateLayout("contentPadding", value)} />
+        <NumberControl label="Section gap" min={18} max={90} value={config.layout.sectionGap} onChange={(value) => updateLayout("sectionGap", value)} />
+      </section>
+
+      <section>
+        <h2>Background</h2>
+        <NumberControl label="Background size" min={60} max={220} value={config.layout.backgroundSize} onChange={(value) => updateLayout("backgroundSize", value)} />
+        <NumberControl label="Background opacity" min={0} max={100} value={config.layout.backgroundOpacity} onChange={(value) => updateLayout("backgroundOpacity", value)} />
+        <NumberControl label="Background X" min={0} max={100} value={config.layout.backgroundX} onChange={(value) => updateLayout("backgroundX", value)} />
+        <NumberControl label="Background Y" min={-200} max={200} value={config.layout.backgroundY} onChange={(value) => updateLayout("backgroundY", value)} />
+        <NumberControl label="Image radius" min={0} max={100} value={config.layout.imageRadius} onChange={(value) => updateLayout("imageRadius", value)} />
+        <NumberControl label="Image grayscale" min={0} max={100} value={config.layout.imageGray} onChange={(value) => updateLayout("imageGray", value)} />
+        <NumberControl label="Image sepia" min={0} max={100} value={config.layout.imageSepia} onChange={(value) => updateLayout("imageSepia", value)} />
+      </section>
+
+      <section>
+        <h2>Colors</h2>
+        <ColorControl label="Paper" value={config.colors.paper} onChange={(value) => updateColor("paper", value)} />
+        <ColorControl label="Ink" value={config.colors.ink} onChange={(value) => updateColor("ink", value)} />
+        <ColorControl label="Gold" value={config.colors.gold} onChange={(value) => updateColor("gold", value)} />
+        <ColorControl label="Green accent" value={config.colors.green} onChange={(value) => updateColor("green", value)} />
+        <ColorControl label="Burgundy accent" value={config.colors.burgundy} onChange={(value) => updateColor("burgundy", value)} />
+        <ColorControl label="Top bar" value={config.colors.topbar} onChange={(value) => updateColor("topbar", value)} />
+      </section>
+
+      <section>
+        <h2>Config</h2>
+        <div className="editor-actions">
+          <button type="button" onClick={exportConfig}>
+            Export config
+          </button>
+          <button type="button" onClick={resetConfig}>
+            Reset
+          </button>
+        </div>
+        <label className="editor-export">
+          <span>Exported site-config.json</span>
+          <textarea
+            value={exported}
+            onChange={(event) => importConfig(event.target.value)}
+            placeholder="Export or paste a site-config.json here"
+            rows="8"
+          />
+        </label>
+      </section>
+    </aside>
+  );
+}
+
 export function App() {
   const [language, setLanguage] = useState("en");
   const [selectedLeaderId, setSelectedLeaderId] = useState("chiang");
+  const [siteConfig, setSiteConfig] = useState(() => mergeSiteConfig(readStoredConfig()));
+  const [isEditMode] = useState(() => new URLSearchParams(window.location.search).has("edit"));
   const labels = copy[language];
   const selectedLeader = useMemo(
     () => leaders.find((leader) => leader.id === selectedLeaderId) ?? leaders[0],
     [selectedLeaderId],
   );
   const leaderText = selectedLeader[language];
+  const selectedLeaderAssets = siteConfig.assets.leaders[selectedLeader.id];
+
+  useEffect(() => {
+    const variables = createCssVariables(siteConfig);
+    for (const [name, value] of Object.entries(variables)) {
+      document.documentElement.style.setProperty(name, value);
+    }
+    storeConfig(siteConfig);
+  }, [siteConfig]);
 
   return (
-    <main className={`site-shell theme-${selectedLeader.accent}`}>
+    <main className={`site-shell theme-${selectedLeader.accent} ${isEditMode ? "edit-mode" : ""}`}>
       <header className="topbar">
         <div>
           <p>{labels.subtitle}</p>
@@ -203,7 +459,7 @@ export function App() {
                   onClick={() => setSelectedLeaderId(leader.id)}
                   aria-pressed={isActive}
                 >
-                  <img src={leader.portrait} alt="" />
+                  <img src={siteConfig.assets.leaders[leader.id].portrait} alt="" />
                   <span>
                     <strong>{item.name}</strong>
                     <small>{item.civilization}</small>
@@ -216,7 +472,7 @@ export function App() {
 
           <article className="leader-content" data-testid="leader-dossier">
             <div className="leader-heading">
-              <img src={selectedLeader.emblem} alt="" className="civ-emblem" />
+              <img src={selectedLeaderAssets.emblem} alt="" className="civ-emblem" />
               <div>
                 <h2>{leaderText.name}</h2>
                 <p>{leaderText.civilization}</p>
@@ -224,9 +480,9 @@ export function App() {
             </div>
             <blockquote>{leaderText.quote}</blockquote>
 
-            <AbilityBlock icon="/assets/icon-leader-ability.png" label={labels.leaderAbility} ability={leaderText.leaderAbility} />
+            <AbilityBlock icon={siteConfig.assets.leaderAbilityIcon} label={labels.leaderAbility} ability={leaderText.leaderAbility} />
             <AbilityBlock
-              icon="/assets/icon-civ-ability.png"
+              icon={siteConfig.assets.civilizationAbilityIcon}
               label={labels.civilizationAbility}
               ability={leaderText.civilizationAbility}
             />
@@ -240,6 +496,9 @@ export function App() {
 
         <Comments labels={labels} />
       </div>
+      {isEditMode ? (
+        <VisualEditor config={siteConfig} selectedLeaderId={selectedLeader.id} onConfigChange={(value) => setSiteConfig(mergeSiteConfig(value))} />
+      ) : null}
     </main>
   );
 }

@@ -1,12 +1,27 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup } from "@testing-library/react";
-import { render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { App } from "./App.jsx";
+import { copy, leaders } from "./content.js";
+
+function createFileReaderMock(result) {
+  return class {
+    readAsDataURL() {
+      this.result = result;
+      this.onload?.();
+    }
+  };
+}
+
+beforeEach(() => {
+  localStorage.clear();
+  window.history.replaceState({}, "", "/");
+});
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllGlobals();
 });
 
 describe("More Historical Leaders page", () => {
@@ -43,12 +58,48 @@ describe("More Historical Leaders page", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "中文" }));
+    await user.click(screen.getByRole("button", { name: copy.zh.code }));
 
-    expect(screen.getByRole("heading", { name: "更多历史领袖" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: copy.zh.title })).toBeInTheDocument();
     const dossier = screen.getByTestId("leader-dossier");
-    expect(within(dossier).getByRole("heading", { name: "蒋介石" })).toBeInTheDocument();
-    expect(within(dossier).getByText("领袖能力")).toBeInTheDocument();
-    expect(within(dossier).getByText(/海岛奇兵/)).toBeInTheDocument();
+    expect(within(dossier).getByRole("heading", { name: leaders[0].zh.name })).toBeInTheDocument();
+    expect(within(dossier).getByText(copy.zh.leaderAbility)).toBeInTheDocument();
+  });
+
+  test("hides the visual editor unless edit mode is enabled", () => {
+    render(<App />);
+
+    expect(screen.queryByRole("complementary", { name: "Visual editor" })).not.toBeInTheDocument();
+  });
+
+  test("edit mode adjusts avatar size and exports the current config", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/?edit=1");
+    render(<App />);
+
+    expect(screen.getByRole("complementary", { name: "Visual editor" })).toBeInTheDocument();
+    const avatarSize = screen.getByLabelText("Avatar size");
+    await user.clear(avatarSize);
+    await user.type(avatarSize, "132");
+
+    expect(document.documentElement.style.getPropertyValue("--editor-avatar-size")).toBe("132px");
+
+    await user.click(screen.getByRole("button", { name: "Export config" }));
+    const output = screen.getByLabelText("Exported site-config.json");
+    expect(output.value).toContain('"avatarSize": 132');
+  });
+
+  test("edit mode uploads a replacement background image", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("FileReader", createFileReaderMock("data:image/png;base64,replacement"));
+    window.history.replaceState({}, "", "/?edit=1");
+    render(<App />);
+
+    const backgroundInput = screen.getByLabelText("Background image");
+    await user.upload(backgroundInput, new File(["image"], "background.png", { type: "image/png" }));
+
+    expect(document.documentElement.style.getPropertyValue("--editor-background-image")).toContain(
+      "data:image/png;base64,replacement",
+    );
   });
 });

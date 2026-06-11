@@ -1,0 +1,42 @@
+import { describe, expect, test } from "vitest";
+import { defaultSiteConfig, mergeSiteConfig } from "./siteConfig.js";
+
+describe("site visual config", () => {
+  test("merges partial layout and asset overrides with defaults", () => {
+    const merged = mergeSiteConfig({
+      layout: {
+        avatarSize: 132,
+        paperWidth: 1180,
+      },
+      assets: {
+        background: "data:image/png;base64,custom-background",
+        leaders: {
+          chiang: {
+            portrait: "data:image/png;base64,custom-portrait",
+          },
+        },
+      },
+    });
+
+    expect(merged.layout.avatarSize).toBe(132);
+    expect(merged.layout.paperWidth).toBe(1180);
+    expect(merged.layout.railWidth).toBe(defaultSiteConfig.layout.railWidth);
+    expect(merged.assets.background).toBe("data:image/png;base64,custom-background");
+    expect(merged.assets.leaders.chiang.portrait).toBe("data:image/png;base64,custom-portrait");
+    expect(merged.assets.leaders.hitler.portrait).toBe(defaultSiteConfig.assets.leaders.hitler.portrait);
+  });
+
+  test("ignores unsupported config keys", () => {
+    const merged = mergeSiteConfig({
+      layout: {
+        avatarSize: 140,
+        unsafe: "ignored",
+      },
+      arbitrary: true,
+    });
+
+    expect(merged.layout.avatarSize).toBe(140);
+    expect(merged.layout.unsafe).toBeUndefined();
+    expect(merged.arbitrary).toBeUndefined();
+  });
+});
