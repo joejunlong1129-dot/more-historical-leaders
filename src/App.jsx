@@ -1,6 +1,6 @@
 import { ArrowSquareOut, ChatText, SteamLogo } from "@phosphor-icons/react";
 import { useEffect, useId, useMemo, useState } from "react";
-import { copy, fallbackComments, leaders, steamUrl } from "./content.js";
+import { copy, leaders, steamUrl } from "./content.js";
 import { createCssVariables, defaultSiteConfig, mergeSiteConfig, serializeSiteConfig } from "./siteConfig.js";
 
 const configStorageKey = "more-historical-leaders-site-config";
@@ -46,7 +46,7 @@ function UniqueItem({ label, item }) {
 }
 
 function Comments({ labels }) {
-  const [comments, setComments] = useState(fallbackComments);
+  const [comments, setComments] = useState([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
@@ -56,7 +56,7 @@ function Comments({ labels }) {
     fetch("/api/comments")
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("comments unavailable"))))
       .then((data) => {
-        if (alive && Array.isArray(data.comments) && data.comments.length > 0) {
+        if (alive && Array.isArray(data.comments)) {
           setComments(data.comments);
         }
       })
@@ -75,13 +75,6 @@ function Comments({ labels }) {
       return;
     }
 
-    const optimisticComment = {
-      id: `local-${Date.now()}`,
-      name: trimmedName,
-      message: trimmedMessage,
-      created_at: new Date().toISOString(),
-    };
-
     try {
       const response = await fetch("/api/comments", {
         method: "POST",
@@ -92,15 +85,16 @@ function Comments({ labels }) {
         throw new Error("comment rejected");
       }
       const data = await response.json();
+      if (!data.comment) {
+        throw new Error("comment missing");
+      }
       setComments((current) => [data.comment, ...current]);
       setStatus(labels.code === "中文" ? "留言已提交。" : "Comment submitted.");
+      setName("");
+      setMessage("");
     } catch {
-      setComments((current) => [optimisticComment, ...current]);
-      setStatus(labels.code === "中文" ? "本地预览已添加留言。" : "Added in local preview.");
+      setStatus(labels.code === "中文" ? "留言保存失败，请稍后再试。" : "Could not save comment. Try again later.");
     }
-
-    setName("");
-    setMessage("");
   }
 
   return (

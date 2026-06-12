@@ -17,8 +17,21 @@ function sanitize(value, maxLength) {
     .slice(0, maxLength);
 }
 
+function getCommentsDb(env) {
+  return env?.DB && typeof env.DB.prepare === "function" ? env.DB : null;
+}
+
+function dbUnavailable() {
+  return json({ error: "Comments database is not configured." }, 503);
+}
+
 export async function onRequestGet({ env }) {
-  const { results } = await env.DB.prepare(
+  const db = getCommentsDb(env);
+  if (!db) {
+    return dbUnavailable();
+  }
+
+  const { results } = await db.prepare(
     "SELECT id, name, message, created_at FROM comments ORDER BY created_at DESC LIMIT 50",
   ).all();
 
@@ -39,17 +52,21 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Name and message are required." }, 400);
   }
 
-  const createdAt = new Date().toISOString();
-  await env.DB.prepare("INSERT INTO comments (name, message, created_at) VALUES (?, ?, ?)").bind(name, message, createdAt).run();
+  const db = getCommentsDb(env);
+  if (!db) {
+    return dbUnavailable();
+  }
+
+  const comment = await db
+    .prepare(
+      "INSERT INTO comments (name, message, created_at) VALUES (?, ?, ?) RETURNING id, name, message, created_at",
+    )
+    .bind(name, message, new Date().toISOString())
+    .first();
 
   return json(
     {
-      comment: {
-        id: createdAt,
-        name,
-        message,
-        created_at: createdAt,
-      },
+      comment,
     },
     201,
   );

@@ -14,6 +14,13 @@ function createFileReaderMock(result) {
   };
 }
 
+function createJsonResponse(body, ok = true) {
+  return {
+    ok,
+    json: async () => body,
+  };
+}
+
 beforeEach(() => {
   localStorage.clear();
   window.history.replaceState({}, "", "/");
@@ -81,16 +88,10 @@ describe("More Historical Leaders page", () => {
       "fetch",
       vi.fn((url) => {
         if (url === "/site-config.json") {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ layout: { avatarSize: 144 } }),
-          });
+          return Promise.resolve(createJsonResponse({ layout: { avatarSize: 144 } }));
         }
 
-        return Promise.resolve({
-          ok: false,
-          json: async () => ({}),
-        });
+        return Promise.resolve(createJsonResponse({}, false));
       }),
     );
 
@@ -99,6 +100,61 @@ describe("More Historical Leaders page", () => {
     await waitFor(() => {
       expect(document.documentElement.style.getPropertyValue("--editor-avatar-size")).toBe("144px");
     });
+  });
+
+  test("uses the live comments response instead of seed comments", async () => {
+    const fetchMock = vi.fn((url) => {
+      if (url === "/api/comments") {
+        return Promise.resolve(createJsonResponse({ comments: [] }));
+      }
+
+      return Promise.resolve(createJsonResponse({}, false));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<App />);
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/comments"));
+    expect(screen.queryByText(/Great addition to the game/i)).not.toBeInTheDocument();
+  });
+
+  test("submits a comment through the API and renders the saved row", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn((url, options = {}) => {
+      if (url === "/api/comments" && options.method === "POST") {
+        return Promise.resolve(
+          createJsonResponse({
+            comment: {
+              id: "server-comment-1",
+              name: "Player",
+              message: "Great dossier.",
+              created_at: "2026-06-12T00:00:00.000Z",
+            },
+          }),
+        );
+      }
+
+      if (url === "/api/comments") {
+        return Promise.resolve(createJsonResponse({ comments: [] }));
+      }
+
+      return Promise.resolve(createJsonResponse({}, false));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<App />);
+    await user.type(screen.getByPlaceholderText("Enter your name"), " Player ");
+    await user.type(screen.getByPlaceholderText("Share your thoughts about this mod..."), " Great dossier. ");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(await screen.findByText("Great dossier.")).toBeInTheDocument();
+    expect(screen.getByText("Player")).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/comments",
+      expect.objectContaining({
+        method: "POST",
+      }),
+    );
   });
 
   test("edit mode adjusts avatar size and exports the current config", async () => {
