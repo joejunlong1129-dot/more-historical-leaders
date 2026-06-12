@@ -33,11 +33,11 @@
     "civilizationAbilityIcon": "/assets/icon-civ-ability.png",
     "leaders": {
       "chiang": {
-        "portrait": "/assets/portrait-chiang.png",
+        "portrait": "/assets/portrait-chiang-fill.png",
         "emblem": "/assets/emblem-roc.png"
       },
       "hitler": {
-        "portrait": "/assets/portrait-hitler.png",
+        "portrait": "/assets/portrait-hitler-fill.png",
         "emblem": "/assets/emblem-third-reich.png"
       }
     }

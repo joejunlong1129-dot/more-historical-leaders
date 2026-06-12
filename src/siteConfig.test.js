@@ -46,7 +46,11 @@ describe("site visual config", () => {
         background: "/assets/paper-map.png",
         leaderAbilityIcon: "/assets/icon-leader-ability.png",
         leaders: {
+          chiang: {
+            portrait: "/assets/portrait-chiang.png",
+          },
           hitler: {
+            portrait: "/assets/portrait-hitler.png",
             emblem: "/assets/emblem-neutral-command.png",
           },
         },
@@ -55,6 +59,8 @@ describe("site visual config", () => {
 
     expect(merged.assets.background).toBe("/assets/paper-plain.png");
     expect(merged.assets.leaderAbilityIcon).toBe("/assets/icon-leader-command.png");
+    expect(merged.assets.leaders.chiang.portrait).toBe("/assets/portrait-chiang-fill.png");
+    expect(merged.assets.leaders.hitler.portrait).toBe("/assets/portrait-hitler-fill.png");
     expect(merged.assets.leaders.hitler.emblem).toBe("/assets/emblem-third-reich.png");
   });
 });

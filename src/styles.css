@@ -207,19 +207,19 @@ a {
   position: relative;
   --avatar-x: 50%;
   --avatar-y: 50%;
-  --avatar-scale: 1.08;
+  --avatar-scale: 1;
 }
 
 .leader-tab[data-leader-id="chiang"] {
   --avatar-x: 50%;
-  --avatar-y: 48%;
-  --avatar-scale: 1.1;
+  --avatar-y: 50%;
+  --avatar-scale: 1;
 }
 
 .leader-tab[data-leader-id="hitler"] {
-  --avatar-x: 51%;
-  --avatar-y: 47%;
-  --avatar-scale: 1.12;
+  --avatar-x: 50%;
+  --avatar-y: 50%;
+  --avatar-scale: 1;
 }
 
 .leader-tab.active {
@@ -275,17 +275,6 @@ a {
   font-size: calc(0.85rem * var(--editor-body-scale, 1));
   letter-spacing: 0.09em;
   text-transform: uppercase;
-}
-
-.rail-watermark {
-  position: absolute;
-  left: 95px;
-  bottom: 120px;
-  width: 120px;
-  height: 120px;
-  opacity: 0.16;
-  background: url("/assets/emblem-roc.png") center / contain no-repeat;
-  filter: grayscale(1);
 }
 
 .leader-content {
@@ -710,8 +699,7 @@ blockquote {
     border-bottom: 1px solid var(--line);
   }
 
-  .leader-tab.active::after,
-  .rail-watermark {
+  .leader-tab.active::after {
     display: none;
   }
 

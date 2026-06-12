@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 describe("More Historical Leaders page", () => {
-  test("shows one selected leader dossier by default", () => {
+  test("shows Hitler first and one selected leader dossier by default", () => {
     render(<App />);
 
     expect(screen.getByRole("heading", { name: /More Historical Leaders/i })).toBeInTheDocument();
@@ -34,10 +34,14 @@ describe("More Historical Leaders page", () => {
       "https://steamcommunity.com/sharedfiles/filedetails/?id=3738922774",
     );
 
+    const leaderButtons = screen.getAllByRole("button", { name: /Chiang Kai-shek|Adolf Hitler/i });
+    expect(leaderButtons[0]).toHaveTextContent("Adolf Hitler");
+    expect(leaderButtons[1]).toHaveTextContent("Chiang Kai-shek");
+
     const dossier = screen.getByTestId("leader-dossier");
-    expect(within(dossier).getByRole("heading", { name: /Chiang Kai-shek/i })).toBeInTheDocument();
-    expect(within(dossier).getByText(/Island Commandos/i)).toBeInTheDocument();
-    expect(within(dossier).queryByText(/Revanchist Mobilization/i)).not.toBeInTheDocument();
+    expect(within(dossier).getByRole("heading", { name: /Adolf Hitler/i })).toBeInTheDocument();
+    expect(within(dossier).getByText(/Revanchist Mobilization/i)).toBeInTheDocument();
+    expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });
 
@@ -45,12 +49,12 @@ describe("More Historical Leaders page", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: /Adolf Hitler/i }));
+    await user.click(screen.getByRole("button", { name: /Chiang Kai-shek/i }));
 
     const dossier = screen.getByTestId("leader-dossier");
-    expect(within(dossier).getByRole("heading", { name: /Adolf Hitler/i })).toBeInTheDocument();
-    expect(within(dossier).getByText(/Revanchist Mobilization/i)).toBeInTheDocument();
-    expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
+    expect(within(dossier).getByRole("heading", { name: /Chiang Kai-shek/i })).toBeInTheDocument();
+    expect(within(dossier).getByText(/Island Commandos/i)).toBeInTheDocument();
+    expect(within(dossier).queryByText(/Revanchist Mobilization/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });
 
@@ -62,7 +66,7 @@ describe("More Historical Leaders page", () => {
 
     expect(screen.getByRole("heading", { name: copy.zh.title })).toBeInTheDocument();
     const dossier = screen.getByTestId("leader-dossier");
-    expect(within(dossier).getByRole("heading", { name: leaders[0].zh.name })).toBeInTheDocument();
+    expect(within(dossier).getByRole("heading", { name: leaders.find((leader) => leader.id === "hitler").zh.name })).toBeInTheDocument();
     expect(within(dossier).getByText(copy.zh.leaderAbility)).toBeInTheDocument();
   });
 

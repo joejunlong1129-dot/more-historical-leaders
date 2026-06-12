@@ -4,6 +4,7 @@ import { copy, fallbackComments, leaders, steamUrl } from "./content.js";
 import { createCssVariables, defaultSiteConfig, mergeSiteConfig, serializeSiteConfig } from "./siteConfig.js";
 
 const configStorageKey = "more-historical-leaders-site-config";
+const leaderDisplayOrder = ["hitler", "chiang"];
 
 function formatDate(value, lang) {
   const date = new Date(value);
@@ -391,7 +392,7 @@ function VisualEditor({ config, selectedLeaderId, onConfigChange }) {
 
 export function App() {
   const [language, setLanguage] = useState("en");
-  const [selectedLeaderId, setSelectedLeaderId] = useState("chiang");
+  const [selectedLeaderId, setSelectedLeaderId] = useState("hitler");
   const [isEditMode] = useState(() => new URLSearchParams(window.location.search).has("edit"));
   const [siteConfig, setSiteConfig] = useState(() =>
     mergeSiteConfig(isEditMode ? (readStoredConfig() ?? defaultSiteConfig) : defaultSiteConfig),
@@ -400,6 +401,10 @@ export function App() {
   const selectedLeader = useMemo(
     () => leaders.find((leader) => leader.id === selectedLeaderId) ?? leaders[0],
     [selectedLeaderId],
+  );
+  const displayedLeaders = useMemo(
+    () => [...leaders].sort((a, b) => leaderDisplayOrder.indexOf(a.id) - leaderDisplayOrder.indexOf(b.id)),
+    [],
   );
   const leaderText = selectedLeader[language];
   const selectedLeaderAssets = siteConfig.assets.leaders[selectedLeader.id];
@@ -474,7 +479,7 @@ export function App() {
         <section className="dossier" aria-label="Leader dossier">
           <aside className="leader-rail" aria-label={labels.leaders}>
             <h2>{labels.leaders}</h2>
-            {leaders.map((leader) => {
+            {displayedLeaders.map((leader) => {
               const item = leader[language];
               const isActive = selectedLeaderId === leader.id;
               return (
@@ -496,7 +501,6 @@ export function App() {
                 </button>
               );
             })}
-            <div className="rail-watermark" aria-hidden="true" />
           </aside>
 
           <article className="leader-content" data-testid="leader-dossier">
