@@ -48,7 +48,7 @@ a {
   min-height: 100vh;
   background:
     linear-gradient(rgb(237 229 211 / var(--editor-background-opacity, 0.86)), rgb(237 229 211 / var(--editor-background-opacity, 0.86))),
-    var(--editor-background-image, url("/assets/paper-map.png")) var(--editor-background-position, top center) / var(--editor-background-size, 100% auto) repeat-y,
+    var(--editor-background-image, url("/assets/paper-plain.png")) var(--editor-background-position, top center) / var(--editor-background-size, 100% auto) repeat-y,
     var(--paper);
 }
 
@@ -227,11 +227,14 @@ a {
 }
 
 .leader-tab img {
+  display: block;
   width: var(--editor-avatar-size, 100px);
   height: var(--editor-avatar-size, 100px);
   object-fit: cover;
+  object-position: center center;
   border-radius: var(--editor-image-radius, 100%);
   border: 2px solid rgba(197, 164, 106, 0.86);
+  background: #efe5d2;
   filter: var(--editor-image-filter, grayscale(100%) sepia(10%));
 }
 
@@ -272,10 +275,14 @@ a {
 }
 
 .civ-emblem {
+  display: block;
   width: var(--editor-emblem-size, 104px);
   height: var(--editor-emblem-size, 104px);
   border-radius: var(--editor-image-radius, 100%);
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
+  padding: 7px;
+  background: #efe5d2;
   border: 1px solid rgba(75, 61, 37, 0.55);
   filter: var(--editor-image-filter, grayscale(100%) sepia(10%));
 }
@@ -339,9 +346,13 @@ blockquote {
 }
 
 .ability-icon {
+  display: block;
   width: var(--editor-ability-icon-size, 82px);
   height: var(--editor-ability-icon-size, 82px);
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
+  padding: 5px;
+  background: #efe5d2;
   border-radius: var(--editor-image-radius, 100%);
   filter: var(--editor-image-filter, grayscale(15%) sepia(20%));
 }

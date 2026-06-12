@@ -28,7 +28,7 @@ export const defaultSiteConfig = {
     topbar: "#151514",
   },
   assets: {
-    background: "/assets/paper-map.png",
+    background: "/assets/paper-plain.png",
     leaderAbilityIcon: "/assets/icon-leader-ability.png",
     civilizationAbilityIcon: "/assets/icon-civ-ability.png",
     leaders: {
@@ -38,7 +38,7 @@ export const defaultSiteConfig = {
       },
       hitler: {
         portrait: "/assets/portrait-hitler.png",
-        emblem: "/assets/emblem-third-reich.png",
+        emblem: "/assets/emblem-neutral-command.png",
       },
     },
   },
@@ -64,6 +64,11 @@ const layoutRanges = {
   imageSepia: [0, 100],
 };
 
+const deprecatedAssetPaths = {
+  "/assets/paper-map.png": defaultSiteConfig.assets.background,
+  "/assets/emblem-third-reich.png": defaultSiteConfig.assets.leaders.hitler.emblem,
+};
+
 function clampNumber(value, fallback, min, max) {
   const number = Number(value);
   if (!Number.isFinite(number)) {
@@ -74,6 +79,11 @@ function clampNumber(value, fallback, min, max) {
 
 function pickString(value, fallback) {
   return typeof value === "string" && value.trim() ? value : fallback;
+}
+
+function pickAssetPath(value, fallback) {
+  const selected = pickString(value, fallback);
+  return deprecatedAssetPaths[selected] ?? selected;
 }
 
 export function mergeSiteConfig(config = {}) {
@@ -95,20 +105,20 @@ export function mergeSiteConfig(config = {}) {
     safe.colors[key] = pickString(config.colors?.[key], fallback);
   }
 
-  safe.assets.background = pickString(config.assets?.background, defaultSiteConfig.assets.background);
-  safe.assets.leaderAbilityIcon = pickString(
+  safe.assets.background = pickAssetPath(config.assets?.background, defaultSiteConfig.assets.background);
+  safe.assets.leaderAbilityIcon = pickAssetPath(
     config.assets?.leaderAbilityIcon,
     defaultSiteConfig.assets.leaderAbilityIcon,
   );
-  safe.assets.civilizationAbilityIcon = pickString(
+  safe.assets.civilizationAbilityIcon = pickAssetPath(
     config.assets?.civilizationAbilityIcon,
     defaultSiteConfig.assets.civilizationAbilityIcon,
   );
 
   for (const [leaderId, defaults] of Object.entries(defaultSiteConfig.assets.leaders)) {
     safe.assets.leaders[leaderId] = {
-      portrait: pickString(config.assets?.leaders?.[leaderId]?.portrait, defaults.portrait),
-      emblem: pickString(config.assets?.leaders?.[leaderId]?.emblem, defaults.emblem),
+      portrait: pickAssetPath(config.assets?.leaders?.[leaderId]?.portrait, defaults.portrait),
+      emblem: pickAssetPath(config.assets?.leaders?.[leaderId]?.emblem, defaults.emblem),
     };
   }
 

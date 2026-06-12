@@ -39,4 +39,20 @@ describe("site visual config", () => {
     expect(merged.layout.unsafe).toBeUndefined();
     expect(merged.arbitrary).toBeUndefined();
   });
+
+  test("replaces deprecated default artwork paths", () => {
+    const merged = mergeSiteConfig({
+      assets: {
+        background: "/assets/paper-map.png",
+        leaders: {
+          hitler: {
+            emblem: "/assets/emblem-third-reich.png",
+          },
+        },
+      },
+    });
+
+    expect(merged.assets.background).toBe("/assets/paper-plain.png");
+    expect(merged.assets.leaders.hitler.emblem).toBe("/assets/emblem-neutral-command.png");
+  });
 });
