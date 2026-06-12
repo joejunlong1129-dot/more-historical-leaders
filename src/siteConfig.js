@@ -29,7 +29,7 @@ export const defaultSiteConfig = {
   },
   assets: {
     background: "/assets/paper-plain.png",
-    leaderAbilityIcon: "/assets/icon-leader-ability.png",
+    leaderAbilityIcon: "/assets/icon-leader-command.png",
     civilizationAbilityIcon: "/assets/icon-civ-ability.png",
     leaders: {
       chiang: {
@@ -38,7 +38,7 @@ export const defaultSiteConfig = {
       },
       hitler: {
         portrait: "/assets/portrait-hitler.png",
-        emblem: "/assets/emblem-neutral-command.png",
+        emblem: "/assets/emblem-third-reich.png",
       },
     },
   },
@@ -66,7 +66,8 @@ const layoutRanges = {
 
 const deprecatedAssetPaths = {
   "/assets/paper-map.png": defaultSiteConfig.assets.background,
-  "/assets/emblem-third-reich.png": defaultSiteConfig.assets.leaders.hitler.emblem,
+  "/assets/emblem-neutral-command.png": defaultSiteConfig.assets.leaders.hitler.emblem,
+  "/assets/icon-leader-ability.png": defaultSiteConfig.assets.leaderAbilityIcon,
 };
 
 function clampNumber(value, fallback, min, max) {

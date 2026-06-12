@@ -44,15 +44,17 @@ describe("site visual config", () => {
     const merged = mergeSiteConfig({
       assets: {
         background: "/assets/paper-map.png",
+        leaderAbilityIcon: "/assets/icon-leader-ability.png",
         leaders: {
           hitler: {
-            emblem: "/assets/emblem-third-reich.png",
+            emblem: "/assets/emblem-neutral-command.png",
           },
         },
       },
     });
 
     expect(merged.assets.background).toBe("/assets/paper-plain.png");
-    expect(merged.assets.leaders.hitler.emblem).toBe("/assets/emblem-neutral-command.png");
+    expect(merged.assets.leaderAbilityIcon).toBe("/assets/icon-leader-command.png");
+    expect(merged.assets.leaders.hitler.emblem).toBe("/assets/emblem-third-reich.png");
   });
 });

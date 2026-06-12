@@ -29,7 +29,7 @@
   },
   "assets": {
     "background": "/assets/paper-plain.png",
-    "leaderAbilityIcon": "/assets/icon-leader-ability.png",
+    "leaderAbilityIcon": "/assets/icon-leader-command.png",
     "civilizationAbilityIcon": "/assets/icon-civ-ability.png",
     "leaders": {
       "chiang": {
@@ -38,7 +38,7 @@
       },
       "hitler": {
         "portrait": "/assets/portrait-hitler.png",
-        "emblem": "/assets/emblem-neutral-command.png"
+        "emblem": "/assets/emblem-third-reich.png"
       }
     }
   }

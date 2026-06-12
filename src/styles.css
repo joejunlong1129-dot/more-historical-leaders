@@ -205,6 +205,21 @@ a {
   text-align: left;
   cursor: pointer;
   position: relative;
+  --avatar-x: 50%;
+  --avatar-y: 50%;
+  --avatar-scale: 1.08;
+}
+
+.leader-tab[data-leader-id="chiang"] {
+  --avatar-x: 50%;
+  --avatar-y: 48%;
+  --avatar-scale: 1.1;
+}
+
+.leader-tab[data-leader-id="hitler"] {
+  --avatar-x: 51%;
+  --avatar-y: 47%;
+  --avatar-scale: 1.12;
 }
 
 .leader-tab.active {
@@ -226,16 +241,25 @@ a {
   transform: translateY(-50%) rotate(45deg);
 }
 
-.leader-tab img {
-  display: block;
+.avatar-frame {
+  display: grid;
+  place-items: center;
   width: var(--editor-avatar-size, 100px);
   height: var(--editor-avatar-size, 100px);
-  object-fit: cover;
-  object-position: center center;
   border-radius: var(--editor-image-radius, 100%);
   border: 2px solid rgba(197, 164, 106, 0.86);
   background: #efe5d2;
+  overflow: hidden;
+}
+
+.avatar-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--avatar-x) var(--avatar-y);
   filter: var(--editor-image-filter, grayscale(100%) sepia(10%));
+  transform: scale(var(--avatar-scale));
 }
 
 .leader-tab strong {
@@ -281,9 +305,9 @@ a {
   border-radius: var(--editor-image-radius, 100%);
   object-fit: contain;
   object-position: center center;
-  padding: 7px;
-  background: #efe5d2;
-  border: 1px solid rgba(75, 61, 37, 0.55);
+  padding: 0;
+  background: transparent;
+  border: 0;
   filter: var(--editor-image-filter, grayscale(100%) sepia(10%));
 }
 
@@ -351,8 +375,8 @@ blockquote {
   height: var(--editor-ability-icon-size, 82px);
   object-fit: contain;
   object-position: center center;
-  padding: 5px;
-  background: #efe5d2;
+  padding: 0;
+  background: transparent;
   border-radius: var(--editor-image-radius, 100%);
   filter: var(--editor-image-filter, grayscale(15%) sepia(20%));
 }

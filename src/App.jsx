@@ -482,10 +482,13 @@ export function App() {
                   type="button"
                   key={leader.id}
                   className={`leader-tab ${isActive ? "active" : ""}`}
+                  data-leader-id={leader.id}
                   onClick={() => setSelectedLeaderId(leader.id)}
                   aria-pressed={isActive}
                 >
-                  <img src={siteConfig.assets.leaders[leader.id].portrait} alt="" />
+                  <span className="avatar-frame" aria-hidden="true">
+                    <img src={siteConfig.assets.leaders[leader.id].portrait} alt="" />
+                  </span>
                   <span>
                     <strong>{item.name}</strong>
                     <small>{item.civilization}</small>
