@@ -8,3 +8,7 @@ pages_build_output_dir = "dist"
 # database_name = "more_historical_leaders_comments"
 # database_id = "<cloudflare-d1-database-id>"
 # migrations_dir = "migrations"
+[[d1_databases]]
+binding = "DB"
+database_name = "more_historical_leaders_comments"
+database_id = "1385aacf-d48d-455c-b611-b65e0cfb5767"
