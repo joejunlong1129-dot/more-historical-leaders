@@ -1,0 +1,4 @@
+portrait-stalin.png and portrait-stalin-fill.png are cropped web derivatives of "Joseph Stalin official portrait.jpg" from Wikimedia Commons:
+https://commons.wikimedia.org/wiki/File:Joseph_Stalin_official_portrait.jpg
+
+The Commons file page lists source and licensing metadata for the original image.
