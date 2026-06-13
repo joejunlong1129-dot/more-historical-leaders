@@ -1,4 +1,7 @@
 portrait-stalin.png and portrait-stalin-fill.png are cropped web derivatives of "Joseph Stalin official portrait.jpg" from Wikimedia Commons:
 https://commons.wikimedia.org/wiki/File:Joseph_Stalin_official_portrait.jpg
 
+flag-soviet.svg is "Flag of the Soviet Union.svg" from Wikimedia Commons:
+https://commons.wikimedia.org/wiki/File:Flag_of_the_Soviet_Union.svg
+
 The Commons file page lists source and licensing metadata for the original image.

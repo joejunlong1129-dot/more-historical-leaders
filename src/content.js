@@ -162,7 +162,7 @@ export const leaders = [
     id: "stalin",
     accent: "red",
     portrait: "/assets/portrait-stalin.png",
-    emblem: "/assets/emblem-soviet.png",
+    emblem: "/assets/flag-soviet.svg",
     en: {
       name: "Joseph Stalin",
       civilization: "Soviet Union",

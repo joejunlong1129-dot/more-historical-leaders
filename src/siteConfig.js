@@ -43,7 +43,7 @@ export const defaultSiteConfig = {
       },
       stalin: {
         portrait: "/assets/portrait-stalin-fill.png",
-        emblem: "/assets/emblem-soviet.png",
+        emblem: "/assets/flag-soviet.svg",
       },
     },
   },

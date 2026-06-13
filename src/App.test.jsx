@@ -82,6 +82,7 @@ describe("More Historical Leaders page", () => {
     expect(within(dossier).getByText(/Five-Year Plan/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/Great Patriotic War/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/T-34/i)).toBeInTheDocument();
+    expect(dossier.querySelector(".civ-emblem")).toHaveAttribute("src", "/assets/flag-soviet.svg");
     expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });
