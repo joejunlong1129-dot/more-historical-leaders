@@ -505,7 +505,6 @@ export function App() {
                 <p>{leaderText.civilization}</p>
               </div>
             </div>
-            <blockquote>{leaderText.quote}</blockquote>
 
             <AbilityBlock icon={siteConfig.assets.leaderAbilityIcon} label={labels.leaderAbility} ability={leaderText.leaderAbility} />
             <AbilityBlock

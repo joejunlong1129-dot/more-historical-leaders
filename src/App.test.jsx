@@ -48,6 +48,7 @@ describe("More Historical Leaders page", () => {
     const dossier = screen.getByTestId("leader-dossier");
     expect(within(dossier).getByRole("heading", { name: /Adolf Hitler/i })).toBeInTheDocument();
     expect(within(dossier).getByText(/Revanchist Mobilization/i)).toBeInTheDocument();
+    expect(within(dossier).queryByText(/high-risk conquest leader/i)).not.toBeInTheDocument();
     expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });
@@ -61,6 +62,7 @@ describe("More Historical Leaders page", () => {
     const dossier = screen.getByTestId("leader-dossier");
     expect(within(dossier).getByRole("heading", { name: /Chiang Kai-shek/i })).toBeInTheDocument();
     expect(within(dossier).getByText(/Island Commandos/i)).toBeInTheDocument();
+    expect(within(dossier).queryByText(/Republic of China looks/i)).not.toBeInTheDocument();
     expect(within(dossier).queryByText(/Revanchist Mobilization/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });

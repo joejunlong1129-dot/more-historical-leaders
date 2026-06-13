@@ -327,15 +327,6 @@ a {
   background: var(--gold);
 }
 
-blockquote {
-  max-width: 650px;
-  margin: 38px 0 36px 72px;
-  color: #2d2821;
-  font-size: calc(1.25rem * var(--editor-body-scale, 1));
-  line-height: 1.65;
-  font-style: italic;
-}
-
 .ability-block {
   padding: 30px 0;
   border-top: 1px solid var(--line);
@@ -715,10 +706,6 @@ blockquote {
 
   .leader-heading {
     align-items: flex-start;
-  }
-
-  blockquote {
-    margin-left: 0;
   }
 
   .unique-grid,
