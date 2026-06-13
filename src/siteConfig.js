@@ -25,6 +25,7 @@ export const defaultSiteConfig = {
     gold: "#c5a46a",
     green: "#173a2d",
     burgundy: "#772520",
+    red: "#a41c20",
     topbar: "#151514",
   },
   assets: {
@@ -39,6 +40,10 @@ export const defaultSiteConfig = {
       hitler: {
         portrait: "/assets/portrait-hitler-fill.png",
         emblem: "/assets/emblem-third-reich.png",
+      },
+      stalin: {
+        portrait: "/assets/portrait-stalin-fill.png",
+        emblem: "/assets/emblem-soviet.png",
       },
     },
   },
@@ -70,6 +75,7 @@ const deprecatedAssetPaths = {
   "/assets/icon-leader-ability.png": defaultSiteConfig.assets.leaderAbilityIcon,
   "/assets/portrait-chiang.png": defaultSiteConfig.assets.leaders.chiang.portrait,
   "/assets/portrait-hitler.png": defaultSiteConfig.assets.leaders.hitler.portrait,
+  "/assets/portrait-stalin.png": defaultSiteConfig.assets.leaders.stalin.portrait,
 };
 
 function clampNumber(value, fallback, min, max) {
@@ -152,6 +158,7 @@ export function createCssVariables(config) {
     "--gold": merged.colors.gold,
     "--green": merged.colors.green,
     "--burgundy": merged.colors.burgundy,
+    "--red": merged.colors.red,
     "--black": merged.colors.topbar,
   };
 }

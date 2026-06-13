@@ -25,6 +25,7 @@
     "gold": "#c5a46a",
     "green": "#173a2d",
     "burgundy": "#772520",
+    "red": "#a41c20",
     "topbar": "#151514"
   },
   "assets": {
@@ -39,6 +40,10 @@
       "hitler": {
         "portrait": "/assets/portrait-hitler-fill.png",
         "emblem": "/assets/emblem-third-reich.png"
+      },
+      "stalin": {
+        "portrait": "/assets/portrait-stalin-fill.png",
+        "emblem": "/assets/emblem-soviet.png"
       }
     }
   }

@@ -8,6 +8,7 @@
   --black: #151514;
   --green: #173a2d;
   --burgundy: #772520;
+  --red: #a41c20;
   --accent: var(--green);
   --accent-dark: #10271f;
   color: var(--ink);
@@ -42,6 +43,11 @@ a {
 .theme-burgundy {
   --accent: var(--burgundy);
   --accent-dark: #44110f;
+}
+
+.theme-red {
+  --accent: var(--red);
+  --accent-dark: #4c1111;
 }
 
 .site-shell {
@@ -217,6 +223,12 @@ a {
 }
 
 .leader-tab[data-leader-id="hitler"] {
+  --avatar-x: 50%;
+  --avatar-y: 50%;
+  --avatar-scale: 1;
+}
+
+.leader-tab[data-leader-id="stalin"] {
   --avatar-x: 50%;
   --avatar-y: 50%;
   --avatar-scale: 1;

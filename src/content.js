@@ -158,6 +158,63 @@ export const leaders = [
       },
     },
   },
+  {
+    id: "stalin",
+    accent: "red",
+    portrait: "/assets/portrait-stalin.png",
+    emblem: "/assets/emblem-soviet.png",
+    en: {
+      name: "Joseph Stalin",
+      civilization: "Soviet Union",
+      quote:
+        "A production and defensive war leader built around industrial planning, powered cities, and mass armored formations.",
+      leaderAbility: {
+        name: "Five-Year Plan",
+        description:
+          "+30% Production toward Industrial Zone districts and buildings in Industrial Zones. Completing any district grants Science equal to 3 times that city's population. Workshops provide +1 Production, Factories +2 Production, and Power Plants +3 Production. Powered cities gain +15% Production toward districts, buildings, and wonders.",
+      },
+      civilizationAbility: {
+        name: "Great Patriotic War",
+        description:
+          "All cities grow 10% faster. While at war, units gain +5 Combat Strength in home territory, cities gain +10 ranged strike strength, and cities gain +20% Production toward military units.",
+      },
+      uniqueUnit: {
+        name: "T-34",
+        description:
+          "Soviet Union unique Modern Era heavy cavalry unit. Replaces the Tank. Cheaper to produce and maintain. Requires Oil to train, but has no Oil maintenance. Lower Combat Strength than the Tank and ignores enemy zone of control.",
+      },
+      uniqueBuilding: {
+        name: "Collective Farm",
+        description:
+          "Soviet Union unique City Center building. Replaces the Granary and is cheaper to build. Provides +3 Food and +3 Housing. Each trade route from this city provides this city +2 Production.",
+      },
+    },
+    zh: {
+      name: "约瑟夫·斯大林",
+      civilization: "苏维埃联盟",
+      quote: "围绕工业计划、电力城市与装甲部队量产展开的生产和防御战争型领袖。",
+      leaderAbility: {
+        name: "五年计划",
+        description:
+          "建造工业区及其中建筑时，+30%生产力。建成任意区域时，获得等同于该城市人口数量3倍的科技值。工作坊额外+1生产力，工厂+2生产力，发电厂+3生产力。拥有充足电力供应的城市，建造区域、建筑和奇观时+15%生产力。",
+      },
+      civilizationAbility: {
+        name: "伟大的卫国战争",
+        description:
+          "所有城市人口增长速度提高10%。处于战争时，单位在本国领土内+5战斗力，城市远程攻击战斗力+10，训练军事单位时+20%生产力。",
+      },
+      uniqueUnit: {
+        name: "T-34",
+        description:
+          "苏维埃联盟特色现代时期重骑兵单位，替代坦克。生产成本和维护费更低。生产时需要石油，但每回合无需消耗石油维护。战斗力低于普通坦克，并无视敌方控制区。",
+      },
+      uniqueBuilding: {
+        name: "集体农庄",
+        description:
+          "苏维埃联盟特色市中心建筑，替代粮仓，建造成本更低。提供+3食物和+3住房。每条从该城市出发的贸易路线，为该城市提供+2生产力。",
+      },
+    },
+  },
 ];
 
 export const fallbackComments = [

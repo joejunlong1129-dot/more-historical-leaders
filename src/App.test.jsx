@@ -41,9 +41,12 @@ describe("More Historical Leaders page", () => {
       "https://steamcommunity.com/sharedfiles/filedetails/?id=3738922774",
     );
 
-    const leaderButtons = screen.getAllByRole("button", { name: /Chiang Kai-shek|Adolf Hitler/i });
-    expect(leaderButtons[0]).toHaveTextContent("Adolf Hitler");
-    expect(leaderButtons[1]).toHaveTextContent("Chiang Kai-shek");
+    const leaderButtons = screen.getAllByRole("button", { name: /Chiang Kai-shek|Adolf Hitler|Joseph Stalin/i });
+    expect(leaderButtons.map((button) => within(button).getByText(/Chiang Kai-shek|Adolf Hitler|Joseph Stalin/i).textContent)).toEqual([
+      "Adolf Hitler",
+      "Joseph Stalin",
+      "Chiang Kai-shek",
+    ]);
 
     const dossier = screen.getByTestId("leader-dossier");
     expect(within(dossier).getByRole("heading", { name: /Adolf Hitler/i })).toBeInTheDocument();
@@ -64,6 +67,22 @@ describe("More Historical Leaders page", () => {
     expect(within(dossier).getByText(/Island Commandos/i)).toBeInTheDocument();
     expect(within(dossier).queryByText(/Republic of China looks/i)).not.toBeInTheDocument();
     expect(within(dossier).queryByText(/Revanchist Mobilization/i)).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
+  });
+
+  test("can select Stalin and shows Soviet Union abilities", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: /Joseph Stalin/i }));
+
+    const dossier = screen.getByTestId("leader-dossier");
+    expect(within(dossier).getByRole("heading", { name: /Joseph Stalin/i })).toBeInTheDocument();
+    expect(within(dossier).getByText("Soviet Union")).toBeInTheDocument();
+    expect(within(dossier).getByText(/Five-Year Plan/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/Great Patriotic War/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/T-34/i)).toBeInTheDocument();
+    expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
   });
 

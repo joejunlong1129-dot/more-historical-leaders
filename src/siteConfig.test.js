@@ -24,6 +24,8 @@ describe("site visual config", () => {
     expect(merged.assets.background).toBe("data:image/png;base64,custom-background");
     expect(merged.assets.leaders.chiang.portrait).toBe("data:image/png;base64,custom-portrait");
     expect(merged.assets.leaders.hitler.portrait).toBe(defaultSiteConfig.assets.leaders.hitler.portrait);
+    expect(merged.assets.leaders.stalin.portrait).toBe(defaultSiteConfig.assets.leaders.stalin.portrait);
+    expect(merged.assets.leaders.stalin.emblem).toBe("/assets/emblem-soviet.png");
   });
 
   test("ignores unsupported config keys", () => {

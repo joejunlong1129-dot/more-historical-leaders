@@ -4,7 +4,7 @@ import { copy, leaders, steamUrl } from "./content.js";
 import { createCssVariables, defaultSiteConfig, mergeSiteConfig, serializeSiteConfig } from "./siteConfig.js";
 
 const configStorageKey = "more-historical-leaders-site-config";
-const leaderDisplayOrder = ["hitler", "chiang"];
+const leaderDisplayOrder = ["hitler", "stalin", "chiang"];
 
 function formatDate(value, lang) {
   const date = new Date(value);
