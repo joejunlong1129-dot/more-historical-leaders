@@ -80,7 +80,10 @@ describe("More Historical Leaders page", () => {
     expect(within(dossier).getByRole("heading", { name: /Joseph Stalin/i })).toBeInTheDocument();
     expect(within(dossier).getByText("Soviet Union")).toBeInTheDocument();
     expect(within(dossier).getByText(/Five-Year Plan/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/additional standard adjacency bonuses/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/Cities with 10 or more Population gain \+10% Science/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/Great Patriotic War/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/Domestic Trade Routes from a city provide the origin city/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/T-34/i)).toBeInTheDocument();
     expect(dossier.querySelector(".civ-emblem")).toHaveAttribute("src", "/assets/flag-soviet.svg");
     expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();

@@ -171,12 +171,12 @@ export const leaders = [
       leaderAbility: {
         name: "Five-Year Plan",
         description:
-          "+30% Production toward Industrial Zone districts and buildings in Industrial Zones. Completing any district grants Science equal to 3 times that city's population. Workshops provide +1 Production, Factories +2 Production, and Power Plants +3 Production. Powered cities gain +15% Production toward districts, buildings, and wonders.",
+          "+30% Production toward Industrial Zone districts and buildings in Industrial Zones. Industrial Zones gain the following additional standard adjacency bonuses: +1 Production from each adjacent specialty district, +1 Production from each adjacent Mine, +1 Production from each adjacent Quarry, and +2 Production from each adjacent Strategic Resource. Cities with 10 or more Population gain +10% Science. Workshops provide +1 Production, Factories +2 Production, and Power Plants +3 Production. Powered cities gain +15% Production toward districts, buildings, and wonders.",
       },
       civilizationAbility: {
         name: "Great Patriotic War",
         description:
-          "All cities grow 10% faster. While at war, units gain +5 Combat Strength in home territory, cities gain +10 ranged strike strength, and cities gain +20% Production toward military units.",
+          "All cities grow 10% faster. Domestic Trade Routes from a city provide the origin city +1 Production for each specialty district in the destination city, and +1 Science and +1 Culture for every 2 specialty districts in the destination city. While at war, units gain +5 Combat Strength in home territory, cities gain +10 ranged strike strength, and cities gain +20% Production toward military units.",
       },
       uniqueUnit: {
         name: "T-34",
@@ -196,12 +196,12 @@ export const leaders = [
       leaderAbility: {
         name: "五年计划",
         description:
-          "建造工业区及其中建筑时，+30%生产力。建成任意区域时，获得等同于该城市人口数量3倍的科技值。工作坊额外+1生产力，工厂+2生产力，发电厂+3生产力。拥有充足电力供应的城市，建造区域、建筑和奇观时+15%生产力。",
+          "建造工业区及其中建筑时，+30%生产力。工业区获得以下额外标准相邻加成：每相邻一个特色区域、矿山或采石场+1生产力；每相邻一处战略资源+2生产力。城市人口达到10或以上时，该城市+10%科技值。工作坊额外+1生产力，工厂+2生产力，发电厂+3生产力。拥有充足电力供应的城市，建造区域、建筑和奇观时+15%生产力。",
       },
       civilizationAbility: {
         name: "伟大的卫国战争",
         description:
-          "所有城市人口增长速度提高10%。处于战争时，单位在本国领土内+5战斗力，城市远程攻击战斗力+10，训练军事单位时+20%生产力。",
+          "所有城市人口增长速度提高10%。从该城市出发的国内贸易路线，根据目的地城市拥有的特色区域数量，为起点城市提供：每个特色区域+1生产力；每两个特色区域+1科技值和+1文化值。处于战争时，单位在本国领土内+5战斗力，城市远程攻击战斗力+10，训练军事单位时+20%生产力。",
       },
       uniqueUnit: {
         name: "T-34",
