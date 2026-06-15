@@ -80,14 +80,31 @@ describe("More Historical Leaders page", () => {
     expect(within(dossier).getByRole("heading", { name: /Joseph Stalin/i })).toBeInTheDocument();
     expect(within(dossier).getByText("Soviet Union")).toBeInTheDocument();
     expect(within(dossier).getByText(/Five-Year Plan/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/Industrial Zones are unlocked at Engineering/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/additional standard adjacency bonuses/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/Cities with 10 or more Population gain \+10% Science/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/Great Patriotic War/i)).toBeInTheDocument();
-    expect(within(dossier).getByText(/Domestic Trade Routes from a city provide the origin city/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/Domestic Trade Routes provide the origin city/i)).toBeInTheDocument();
+    expect(within(dossier).getByText(/friendly territory/i)).toBeInTheDocument();
     expect(within(dossier).getByText(/T-34/i)).toBeInTheDocument();
+    expect(leaders.find((leader) => leader.id === "stalin").en.quote).toContain(
+      "Unlock Industrial Zones at Engineering",
+    );
     expect(dossier.querySelector(".civ-emblem")).toHaveAttribute("src", "/assets/flag-soviet.svg");
     expect(within(dossier).queryByText(/Island Commandos/i)).not.toBeInTheDocument();
     expect(screen.getAllByTestId("leader-dossier")).toHaveLength(1);
+  });
+
+  test("leader summaries match the current mod loading descriptions", () => {
+    expect(leaders.find((leader) => leader.id === "chiang").en.quote).toContain(
+      "disciplined modernization",
+    );
+    expect(leaders.find((leader) => leader.id === "hitler").en.quote).toContain(
+      "militarized Germany built for rapid conquest",
+    );
+    expect(leaders.find((leader) => leader.id === "stalin").en.quote).toContain(
+      "Unlock Industrial Zones at Engineering",
+    );
   });
 
   test("language toggle switches the visible interface and selected dossier copy", async () => {
